@@ -46,16 +46,8 @@ class Player:
             else:
                 self.position[key]
                 print("Avanzale wey.")
-        return self.position 
+        return self.position
 
-
-
-
-        position = self.position
-        position += self.dice
-        for tile in tiles:
-            if dices == tile:
-                print("Moviendome al tile {tile}".format(tile = tile))
 
 
 
