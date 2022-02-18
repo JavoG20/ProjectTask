@@ -3,12 +3,13 @@ import random
 
 #La primera class es Player, tiene su name, sus monedas recolectadas, su vida, su posicion, y sus items.
 class Player:
+
     def __init__(self, name):
         self.name = name
-        self.coins = 0
+        self.coins = 15
         self.health = 15
-        self.position = 0
-        self.dice = []
+        self.position = {}
+        self.dice = 0
         self.items = []
 
     def __repr__(self):
@@ -17,7 +18,10 @@ class Player:
     def roll_dice(self):
         min_dice = 1
         max_dice = 6
-        return random.randit(min_dice, max_dice)
+        dices = random.randit(min_dice, max_dice)
+        self.dice += dices
+        return dices
+
 
     def play(self):
         while True:
@@ -26,6 +30,33 @@ class Player:
                 return False
             else:
                 print("Girando el dado....\n Tu numero es: {}".format(roll_dice))
+
+    def advance_position(self):
+        position = self.position
+        for key, value in position:
+            key = self.dice
+            lose_coin = self.coins - 2
+            add_coin = self.coins + 2
+            if key % 2 == 0:
+                self.position[key] = lose_coin
+                print("Pierdes dos monedas pendejo.")
+            elif key == 1 or 3 or 5:
+                self.position[key] = add_coin
+                print("Ojo! Ganaste 2 monedas pedazo de imbecil!")
+            else:
+                self.position[key]
+                print("Avanzale wey.")
+        return self.position 
+
+
+
+
+        position = self.position
+        position += self.dice
+        for tile in tiles:
+            if dices == tile:
+                print("Moviendome al tile {tile}".format(tile = tile))
+
 
 
 #Estos son para obtener el nombre del Jugador. player_one_name para ver cual es su nombre.
