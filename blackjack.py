@@ -4,26 +4,23 @@ def main():
     start_game_dialogue()
     while True:
         play_game()
-        print("\nDo you want to play again?: (y/n)")
+        print("\nQuieres jugar otra vez?: (y/n)")
         if input() != "y":
-            print("\n\nThanks for playing!")
+            print("\n\nGracias por jugar!")
             break
 
 def start_game_dialogue():
-    print("""Welcome to BlackJack in Python!
-Let's start with some rules of how our game will be played:
-    1. We will use one deck of cards that is reshuffled after every deal.
-    2. It is up to you whether an Ace is worth 1 point or 11 points.
-    3. If you go over 21 points, you will bust and the dealer wins.
-    4. Have fun!
-To start playing, what is your name?: """)
+    print("""Bienvenido a BlackJack en Python!
+Empezemos con las reglas basicas:
+    1. Usaremos una baraja que se mezcla cada vez que termina un juego.
+    2. El As puede costar 1 o 11, depende de ti.
+    3. Si te pasas de 21, pierdes y el dealer gana.
+    4. Diviertete!
+Cual es tu nombre?: """)
     name = input()
-    print("\nOkay " + name + ", let's start playing!")
+    print("\nOkay " + name + ", comenzemos el juego!")
 
 def play_game():
-    """
-    Plays one full game of blackjack, with just the player and the dealer.
-    """
     playing_deck = CardDeck()
 
     dealers_cards = {}
@@ -34,15 +31,14 @@ def play_game():
     player_hold = False
     player_score = 0
 
-    print("\n\nThe dealer will draw two cards first.")
+    print("\n\nEl Dealer sacara dos cartas primero.")
     for i in range(2):
-        #An error had to be excepted if the method for drawing returned None (which means an end result was reached)
         try:
             dealer_score, dealers_cards, playing_deck = dealer_draw(dealer_score, dealers_cards, playing_deck)
         except TypeError:
             return
 
-    print("\n\nYou will draw two cards now.")
+    print("\n\nTe toca sacar dos cartas.")
     for i in range(2):
         try:
             player_score, players_cards, playing_deck = player_draw(player_score, players_cards, playing_deck)
@@ -50,11 +46,11 @@ def play_game():
             return
 
     while not player_hold:
-        print("Do you want to stand?: (y/n)")
+        print("Paras aqui?: (y/n)")
         if input() == "y":
             player_hold = True
             if(player_score < dealer_score):
-                print("\nDealer wins!")
+                print("\nGana el Dealer!")
                 return
         else:
             try:
@@ -64,7 +60,7 @@ def play_game():
 
     while not dealer_hold:
         if dealer_score >= 17:
-            print("\nThe dealer has held!")
+            print("\nEl Dealer se queda!")
             dealer_hold = True
         else:
             try:
@@ -73,51 +69,39 @@ def play_game():
                 return
 
     if player_score > dealer_score:
-        print("\nYou win!")
+        print("\nGanaste!")
     elif dealer_score > player_score:
-        print("\nThe dealer wins!")
+        print("\nGana el Dealer")
     else:
-        print("\nIt's a tie!")
+        print("\nEs un Empate!")
 
 def dealer_logic(current_score):
-    """
-    Used if the dealer encounters an ace. If the dealer can take a score of 11 without busting, return True.
-    If not, return False.
-    """
     if current_score <= 10:
         return True
     return False
 
 def player_draw(player_score, players_cards, playing_deck):
-    """
-    Draws a card for the player and passes in the three parameters of the same name in the parent method.
-    :returns a tuple with the three updated parameters unless an end result was reached:
-    """
     card_tuple = playing_deck.draw_card()
     if card_tuple[0][0] == "A":
-        print("You've drawn an Ace. Would you like it to be worth 1 or 11 points?: (1/11)")
+        print("Sacaste un As. Quieres que valga 1 o 11?: (1/11)")
         players_cards[card_tuple[0]] = int(input())
         player_score += players_cards[card_tuple[0]]
-        print("\n\nYour Score: " + str(player_score) + "\nYour Cards: ")
+        print("\n\nTu Puntaje: " + str(player_score) + "\nTus Cartas: ")
         print_cards(players_cards)
     else:
         players_cards[card_tuple[0]] = card_tuple[1]
         player_score += card_tuple[1]
-        print("\n\nYour Score: " + str(player_score) + "\nYour Cards: ")
+        print("\n\nTu Puntaje: " + str(player_score) + "\nTus Cartas: ")
         print_cards(players_cards)
     if player_score == 21:
-        print("\nYou have played 21. You win!")
+        print("\nTienes 21. Ganaste!")
         return
     if player_score > 21:
-        print("\nYou have busted! Dealer wins!")
+        print("\nTe pasaste! Gana el Dealer")
         return
     return (player_score, players_cards, playing_deck)
 
 def dealer_draw(dealer_score, dealers_cards, playing_deck):
-    """
-    Draws a card for the dealer and passes in the three parameters of the same name in the parent method.
-    :returns a tuple with the three updated parameters unless an end result was reached:
-    """
     card_tuple = playing_deck.draw_card()
     if card_tuple[0][0] == "A":
         if dealer_logic(dealer_score):
@@ -129,20 +113,17 @@ def dealer_draw(dealer_score, dealers_cards, playing_deck):
     else:
         dealers_cards[card_tuple[0]] = card_tuple[1]
         dealer_score += card_tuple[1]
-    print("\n\nDealer's Score: " + str(dealer_score) + "\nDealer's Cards: ")
+    print("\n\nPuntaje del Dealer: " + str(dealer_score) + "\nCartas Dealer: ")
     print_cards(dealers_cards)
     if dealer_score == 21:
-        print("\nThe dealer has played 21. You lose!")
+        print("\nEl dealer tiene 21. Perdiste!")
         return
     elif dealer_score > 21:
-        print("\nThe dealer busted, you win!")
+        print("\nEl Dealer se paso. Ganas!")
         return
     return(dealer_score, dealers_cards, playing_deck)
 
 def print_cards(cards):
-    """
-    Prints out each individual card name in the cards dictionary.
-    """
     for card in cards:
         print(card)
 
